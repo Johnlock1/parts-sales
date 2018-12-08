@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+{% endblock %}
+
+{% block body %}
+  <div>
+    <h3>Import one sale</h3>
+    <div>
+      <form action="{{ url_for('importing') }}"method="post">
+        <div>
+          <input name="date" placeholder="in YYYY-MM-DD form" type="text"></inpput>
+        </div>
+        <div>
+          <input name="parts" placeholder="parts" type="text"></input>
+        </div>
+        <div>
+          <input name="car_model" placeholder="car model" type="text"></input>
+        </div>
+        <div>
+          <input name="item_count" placeholder="item count" type="text"></input>
+        </div>
+        <div>
+          <input name="value" placeholder="value" type="text"></input>
+        </div>
+        <div>
+          <input name="submit" type="submit"></input>
+        </div>
+      </form>
+      <div>
+        {{ message }}
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3>Import from file</h3>
+  </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+{% endblock %}
+
+{% block body %}
+    <div>
+      <h3>What do you want to do?</h3>
+    </div>
+    <div>
+      <ul>
+        <li>
+          <a href="{{ url_for('sales') }}">See sales</a>
+        </li>
+        <li>
+          <a href="{{ url_for('importing') }}">Import new sales</a>
+        </li>
+      </ul>
+    </div>
+
+{% endblock %}

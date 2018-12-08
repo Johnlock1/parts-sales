@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+{% endblock %}
+
+  {% block body %}
+    <div>
+      <form>
+        <input name="search" placeholder="Search" type="text"></input>
+        <input name="submit" type="submit" />
+      </form>
+    </div>
+    <br />
+    <div>
+      <table>
+        <thead>
+          <td>Id</td>
+          <td>Date</td>
+          <td>Parts</td>
+          <td>Car Model</td>
+          <td>Item Count</td>
+          <td>Value</td>
+
+        </thead>
+        <tbody>
+          {% for sale in sales %}
+          <tr>
+            <td>{{sale.id}}</td>
+            <td>{{sale.date}}</td>
+            <td>{{sale.parts}}</td>
+            <td>{{sale.car_model}}</td>
+            <td>{{sale.item_count}}</td>
+            <td>{{sale.value}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endblock %}
