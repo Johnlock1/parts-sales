@@ -27,8 +27,8 @@ def importing():
         date = request.form.get('date')
         parts = request.form.get('parts')
         car_model = request.form.get('car_model')
-        item_count = request.form.get('item_count')
-        value = request.form.get('value')
+        item_count = int(request.form.get('item_count'))
+        value = float(request.form.get('value'))
         if date == "" or value == "":
             print("Error! Empty date or value")
         else:
