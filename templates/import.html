@@ -7,7 +7,7 @@
   <div>
     <h3>Import one sale</h3>
     <div>
-      <form action="{{ url_for('importing') }}"method="post">
+      <form action="{{ url_for('importing') }}" method="post">
         <div>
           <input name="date" placeholder="in YYYY-MM-DD form" type="text"></inpput>
         </div>
@@ -33,6 +33,23 @@
     </div>
   </div>
   <div>
-    <h3>Import from file</h3>
+    <div>
+      <h3>Import from file</h3>
+    </div>
+    <div>
+      <p>
+        Supported files: .xls, .xlsx. Columns must be in the following order:
+
+      </p>
+      <p>
+        Date, parts, car model, item count, value.
+      </p>
+    </div>
+    <div>
+      <form action="{{ url_for('upload_file') }}" method="post">
+        <input type="file" enctype="multipart/form-data"/>
+        <input type="submit" />
+      </form>
+    </div>
   </div>
 {% endblock %}
