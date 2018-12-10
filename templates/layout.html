@@ -15,7 +15,11 @@
         <div class=flashes>
         {% for message in messages %}
           <p>
-            <strong style="color: red;">Error: </strong>{{ message }}
+            {% if message[:7]=="Success" %}
+              <strong style="color: green;">{{ message[:8] }}</strong>{{ message[8:] }}
+            {% else %}
+              <strong style="color: red;">Error: </strong>{{ message }}
+            {% endif %}
           </p>
         {% endfor %}
       </div>
