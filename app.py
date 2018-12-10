@@ -1,12 +1,5 @@
 import os
-<<<<<<< HEAD
-from decimal import Decimal
-from flask import Flask, redirect, render_template, request, url_for
-||||||| merged common ancestors
-from flask import Flask, redirect, render_template, request, url_for
-=======
 from flask import Flask, flash, redirect, render_template, request, url_for
->>>>>>> development
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
@@ -44,34 +37,6 @@ def importing():
 
         # date & value columns of db have a NOT NULL restriction
         if date == "" or value == "":
-<<<<<<< HEAD
-            print("Error! Empty date or value")
-        else:
-            print(f"{date}, {parts}, {car_model}, {item_count}, {value}")
-            print(type(value))
-            try:
-                sale = Sales(date=date, parts=parts, car_model=car_model,
-                             item_count=item_count, value=value)
-                db.session.add(sale)
-                db.session.commit()
-            except:
-                db.session.rollback()
-                raise
-        return redirect(url_for(('importing')))
-    else:
-        return render_template('import.html')
-||||||| merged common ancestors
-            print("Error! Empty date or value")
-        else:
-            print(f"{date}, {parts}, {car_model}, {item_count}, {value}")
-            sale = Sales(date=date, parts=parts, car_model=car_model,
-                         item_count=item_count, value=value)
-            db.session.add(sale)
-            db.session.commit()
-        return redirect(url_for(('importing')))
-    else:
-        return render_template('import.html')
-=======
             flash("Date or value inputs where empty")
             return redirect(request.url)
 
@@ -129,7 +94,6 @@ def upload_file():
             flash('Success! File was uploaded.')
 
     return redirect(url_for('importing'))
->>>>>>> development
 
 
 if __name__ == '__main__':
