@@ -9,7 +9,7 @@ class Sales(db.Model):
     parts = db.Column(db.Text)
     car_model = db.Column(db.Text)
     item_count = db.Column(db.Integer)
-    value = db.Column(db.Numeric(4, 2), nullable=False)
+    value = db.Column(db.Numeric(6, 2), nullable=False)
 
     def __init__(self, date, parts, car_model, item_count, value):
         self.date = date

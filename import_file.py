@@ -1,11 +1,10 @@
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
 from models import *
 from app import db
 
 
 def import_file(file):
     wb = load_workbook(file.filename)
-    # wb = load_workbook('2018-12-01-sales.xlsx')
     ws = wb.active
 
     sale = []

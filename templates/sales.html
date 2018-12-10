@@ -27,10 +27,26 @@
           <tr>
             <td>{{sale.id}}</td>
             <td>{{sale.date}}</td>
+            {% if sale.parts == None %}
+              <td></td>
+            {% else %}
             <td>{{sale.parts}}</td>
+            {% endif %}
+            {% if sale.car_model == None %}
+              <td></td>
+            {% else %}
             <td>{{sale.car_model}}</td>
+            {% endif %}
+            {% if sale.item_count == None %}
+              <td></td>
+            {% else %}
             <td>{{sale.item_count}}</td>
+            {% endif %}
+            {% if sale.value == None %}
+              <td></td>
+            {% else %}
             <td>{{sale.value}}</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>

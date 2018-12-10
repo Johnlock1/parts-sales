@@ -24,7 +24,8 @@ def index():
 
 @app.route('/sales')
 def sales():
-    sales = Sales.query.all()
+    sales = Sales.query.order_by(Sales.date).all()
+
     return render_template('sales.html', sales=sales)
 
 
@@ -33,31 +34,32 @@ def importing():
     if request.method == 'POST':
         date = request.form.get('date')
         value = request.form.get('value')
+
         # date & value columns of db have a NOT NULL restriction
         if date == "" or value == "":
             flash("Date or value inputs where empty")
             return redirect(request.url)
+
         parts = request.form.get('parts', None)
         car_model = request.form.get('car_model', None)
         item_count = request.form.get('item_count', None)
-        print(nullables)
-        # if parts == "":
-        #     parts = None
-        #     print(parts)
-        #     print(type(parts))
-        # if car_model == "":
-        # car_model = None
+
+        # convert empty string to None
+        if parts == "":
+            parts = None
+        if car_model == "":
+            car_model = None
         if item_count == "":
             item_count = None
 
         # save to db
         sale = Sales(date=date, parts=parts, car_model=car_model,
                      item_count=item_count, value=value)
-        print(sale)
         db.session.add(sale)
         db.session.commit()
-        # return redirect(url_for(('importing')))
-    # else:
+
+        flash('Success! Sale was saved.')
+
     return render_template('import.html')
 
 
