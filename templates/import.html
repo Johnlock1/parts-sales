@@ -5,11 +5,11 @@
 
 {% block body %}
   <div>
-    <h3>Import one sale</h3>
+    <h3>Entry a sale</h3>
     <div>
-      <form action="{{ url_for('importing') }}"method="post">
+      <form action="{{ url_for('importing') }}" method="post">
         <div>
-          <input name="date" placeholder="in YYYY-MM-DD form" type="text"></inpput>
+          <input name="date" placeholder="in YYYY-MM-DD form" type="date"></inpput>
         </div>
         <div>
           <input name="parts" placeholder="parts" type="text"></input>
@@ -21,7 +21,13 @@
           <input name="item_count" placeholder="item count" type="number"></input>
         </div>
         <div>
+<<<<<<< HEAD
           <input name="value" placeholder="value" type="number" step"0.01"></input>
+||||||| merged common ancestors
+          <input name="value" placeholder="value" type="text"></input>
+=======
+          <input name="value" placeholder="value" type="float"></input>
+>>>>>>> development
         </div>
         <div>
           <input name="submit" type="submit"></input>
@@ -33,6 +39,23 @@
     </div>
   </div>
   <div>
-    <h3>Import from file</h3>
+    <div>
+      <h3>Import sales from file</h3>
+    </div>
+    <div>
+      <p>
+        Supported files: .xls, .xlsx. Columns must be in the following order:
+
+      </p>
+      <p>
+        Date, parts, car model, item count, value.
+      </p>
+    </div>
+    <div>
+      <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="submit" value="Upload"/>
+      </form>
+    </div>
   </div>
 {% endblock %}
