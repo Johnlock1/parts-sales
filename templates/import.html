@@ -9,7 +9,7 @@
     <div>
       <form action="{{ url_for('importing') }}" method="post">
         <div>
-          <input name="date" placeholder="in YYYY-MM-DD form" type="text"></inpput>
+          <input name="date" placeholder="in YYYY-MM-DD form" type="date"></inpput>
         </div>
         <div>
           <input name="parts" placeholder="parts" type="text"></input>
@@ -18,10 +18,10 @@
           <input name="car_model" placeholder="car model" type="text"></input>
         </div>
         <div>
-          <input name="item_count" placeholder="item count" type="text"></input>
+          <input name="item_count" placeholder="item count" type="number"></input>
         </div>
         <div>
-          <input name="value" placeholder="value" type="text"></input>
+          <input name="value" placeholder="value" type="float"></input>
         </div>
         <div>
           <input name="submit" type="submit"></input>

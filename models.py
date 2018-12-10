@@ -8,7 +8,7 @@ class Sales(db.Model):
     date = db.Column(db.Date, nullable=False)
     parts = db.Column(db.Text)
     car_model = db.Column(db.Text)
-    item_count = db.Column(db.Integer, default=1)
+    item_count = db.Column(db.Integer)
     value = db.Column(db.Numeric(4, 2), nullable=False)
 
     def __init__(self, date, parts, car_model, item_count, value):
@@ -19,4 +19,4 @@ class Sales(db.Model):
         self.value = value
 
     def __repr__(self):
-        return f'id {self.id}, date {self.date}'
+        return f'{self.id}, {self.date}'

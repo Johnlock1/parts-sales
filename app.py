@@ -2,9 +2,6 @@ import os
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
-from import_file import *
-from models import *
-
 
 UPLOAD_FOLDER = os.path.abspath(os.path.dirname('uploads')) + '/uploads'
 ALLOWED_EXTENSIONS = set(['pdf', 'xls', 'xlsx'])
@@ -13,7 +10,11 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 db = SQLAlchemy(app)
+
+from import_file import *
+from models import *
 
 
 @app.route('/')
@@ -31,21 +32,33 @@ def sales():
 def importing():
     if request.method == 'POST':
         date = request.form.get('date')
-        parts = request.form.get('parts')
-        car_model = request.form.get('car_model')
-        item_count = request.form.get('item_count')
         value = request.form.get('value')
+        # date & value columns of db have a NOT NULL restriction
         if date == "" or value == "":
-            print("Error! Empty date or value")
-        else:
-            print(f"{date}, {parts}, {car_model}, {item_count}, {value}")
-            sale = Sales(date=date, parts=parts, car_model=car_model,
-                         item_count=item_count, value=value)
-            db.session.add(sale)
-            db.session.commit()
-        return redirect(url_for(('importing')))
-    else:
-        return render_template('import.html')
+            flash("Date or value inputs where empty")
+            return redirect(request.url)
+        parts = request.form.get('parts', None)
+        car_model = request.form.get('car_model', None)
+        item_count = request.form.get('item_count', None)
+        print(nullables)
+        # if parts == "":
+        #     parts = None
+        #     print(parts)
+        #     print(type(parts))
+        # if car_model == "":
+        # car_model = None
+        if item_count == "":
+            item_count = None
+
+        # save to db
+        sale = Sales(date=date, parts=parts, car_model=car_model,
+                     item_count=item_count, value=value)
+        print(sale)
+        db.session.add(sale)
+        db.session.commit()
+        # return redirect(url_for(('importing')))
+    # else:
+    return render_template('import.html')
 
 
 # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
