@@ -29,6 +29,19 @@ def sales():
     return render_template('sales.html', sales=sales)
 
 
+@app.route('/search', methods=['POST'])
+def search():
+    if request.method == 'POST':
+        search = request.form.get('search')
+        try:
+            sales = Sales.query.filter_by(date=search).all()
+            return render_template('sales.html', sales=sales)
+        except Exception as e:
+            print(e)
+            flash('There was a problem.')
+            return redirect(url_for('sales'))
+
+
 @app.route('/import', methods=['GET', 'POST'])
 def importing():
     if request.method == 'POST':

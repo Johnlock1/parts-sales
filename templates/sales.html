@@ -5,8 +5,8 @@
 
   {% block body %}
     <div>
-      <form>
-        <input name="search" placeholder="Search" type="text"></input>
+      <form action="{{ url_for('search') }}" method="post">
+        <input name="search" placeholder="Search date" type="text"></input>
         <input name="submit" type="submit" />
       </form>
     </div>
