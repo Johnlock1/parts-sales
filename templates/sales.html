@@ -4,61 +4,20 @@
 {% endblock %}
 
   {% block body %}
-    <div>
-      <form>
-        <input name="search" placeholder="Search" type="text"></input>
-        <input name="submit" type="submit" />
-      </form>
-    </div>
-    <br />
-    <!-- <div>
-      <label>Order by</label>
-      <select name="Order_by">
-        <option value="date">Date</option>
-        <option value="id">Id</option>
-
-      </select>
-    </div>
-    <br /> -->
-    <div>
-      <table>
-        <thead style="font-weight:bold;">
-          <td>Id</td>
-          <td>Date</td>
-          <td>Parts</td>
-          <td>Car Model</td>
-          <td>Item Count</td>
-          <td>Value</td>
-
-        </thead>
-        <tbody>
-          {% for sale in sales %}
+  {% from "_formhelpers.html" import render_field %}
+  <div>
+    <form method="post">
+        <table>
           <tr>
-            <td>{{sale.id}}</td>
-            <td>{{sale.date}}</td>
-            {% if sale.parts == None %}
-              <td></td>
-            {% else %}
-            <td>{{sale.parts}}</td>
-            {% endif %}
-            {% if sale.car_model == None %}
-              <td></td>
-            {% else %}
-            <td>{{sale.car_model}}</td>
-            {% endif %}
-            {% if sale.item_count == None %}
-              <td></td>
-            {% else %}
-            <td>{{sale.item_count}}</td>
-            {% endif %}
-            {% if sale.value == None %}
-              <td></td>
-            {% else %}
-            <td>{{sale.value}}</td>
-            {% endif %}
+            <td>{{ render_field(form.search) }}</td>
+            <td><input type="submit" value="Submit" /></td>
           </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+        </table>
+
+    </form>
+  </div>
+  <br />
+  <div>
+    {{ table }}
+  </div>
   {% endblock %}

@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
+
 UPLOAD_FOLDER = os.path.abspath(os.path.dirname('uploads')) + '/uploads'
 ALLOWED_EXTENSIONS = set(['pdf', 'xls', 'xlsx'])
 
@@ -15,6 +16,8 @@ db = SQLAlchemy(app)
 
 from import_file import *
 from models import *
+from tables import *
+from forms import NewSaleForm, SalesSearchForm
 
 
 @app.route('/')
@@ -22,11 +25,37 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/sales')
+@app.route('/sales', methods=['GET', 'POST'])
 def sales():
-    sales = Sales.query.order_by(Sales.date).all()
+    results = Sales.query.order_by(Sales.date).all()
+    table = Results(results)
+    search = SalesSearchForm(request.form)
+    if request.method == 'POST':
+        return search_sales(search)
+    # table.border = True
+    return render_template('sales.html', table=table, form=search)
 
-    return render_template('sales.html', sales=sales)
+
+@app.route('/search_sales')
+def search_sales(search):
+    results = []
+    search_string = search.data['search']
+
+    if search_string == '':
+        return redirect('/sales')
+
+    # display results
+    try:
+        results = Sales.query.filter_by(date=search_string).all()
+        table = Results(results)
+        form = SalesSearchForm(request.form)
+        return render_template('sales.html', table=table, form=form)
+
+    # can't perform select query
+    except Exception as e:
+        db.session.rollback()
+        flash('No results found!')
+        return redirect('/sales')
 
 
 @app.route('/import', methods=['GET', 'POST'])
