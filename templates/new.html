@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+{% endblock %}
+
+  {% block body %}
+
+  {% from "_formhelpers.html" import render_field %}
+  <form method="post">
+    <dl>
+      {{ render_field(form.date) }}
+      {{ render_field(form.parts) }}
+      {{ render_field(form.car_model) }}
+      {{ render_field(form.item_count) }}
+      {{ render_field(form.value) }}
+    </dl>
+    <p><input type="submit" value="Submit" /></p>
+  </form>
+  {% endblock %}

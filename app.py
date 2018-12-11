@@ -58,6 +58,12 @@ def search_sales(search):
         return redirect('/sales')
 
 
+@app.route('/new', methods=['GET', 'POST'])
+def new():
+    form = NewSaleForm(request.form)
+    return render_template('new.html', form=form)
+
+
 @app.route('/import', methods=['GET', 'POST'])
 def importing():
     if request.method == 'POST':
