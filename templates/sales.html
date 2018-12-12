@@ -6,18 +6,34 @@
   {% block body %}
   {% from "_formhelpers.html" import render_field %}
   <div>
-    <form method="post">
-        <table>
-          <tr>
-            <td>{{ render_field(form.search) }}</td>
-            <td><input type="submit" value="Submit" /></td>
-          </tr>
-        </table>
-
-    </form>
+    <table>
+      <tr>
+        <form method="post">
+          <td>{{ render_field(form.search) }}</td>
+          <td><input type="submit" value="Submit" /></td>
+        </form>
+        <form>
+          <td method="post" action="{{ url_for('sales') }}">
+            <input type="submit" value="Clear"/>
+          </td>
+        </form>
+      </tr>
+    </table>
   </div>
   <br />
   <div>
     {{ table }}
+  </div>
+  <div>
+    <table>
+      <tr>
+        <td>
+          <strong>Total:</strong>
+        </td>
+        <td >
+          <strong style="margin-left: 242px">{{ sum }}</strong>
+        </td>
+      </tr>
+    </table>
   </div>
   {% endblock %}

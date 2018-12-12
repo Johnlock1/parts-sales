@@ -6,7 +6,15 @@
   <body>
     <nav>
       <div>
-            <a href="{{ url_for('index') }}">Home</a>
+        <table>
+          <tr>
+            <td><a href="{{ url_for('index') }}">Home</a></td>
+            <td></td>
+            <td><a href="{{ url_for('sales') }}">See Sales</a></td>
+            <td></td>
+            <td><a href="{{ url_for('importing') }}">Enter data</a></td>
+          </tr>
+        </table>
       </div>
     </nav>
     <br />

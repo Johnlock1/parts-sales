@@ -1,6 +1,7 @@
 import os
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from werkzeug.utils import secure_filename
 
 
@@ -28,12 +29,15 @@ def index():
 @app.route('/sales', methods=['GET', 'POST'])
 def sales():
     results = Sales.query.order_by(Sales.date).all()
+    total = sum([sale.value for sale in results])
+
     table = Results(results)
+
     search = SalesSearchForm(request.form)
     if request.method == 'POST':
         return search_sales(search)
     # table.border = True
-    return render_template('sales.html', table=table, form=search)
+    return render_template('sales.html', table=table, form=search, sum=total)
 
 
 @app.route('/search_sales')
@@ -47,15 +51,23 @@ def search_sales(search):
     # display results
     try:
         results = Sales.query.filter_by(date=search_string).all()
+        total = sum([sale.value for sale in results])
+
         table = Results(results)
         form = SalesSearchForm(request.form)
-        return render_template('sales.html', table=table, form=form)
+        return render_template('sales.html', table=table, form=form, sum=total)
 
     # can't perform select query
     except Exception as e:
         db.session.rollback()
         flash('No results found!')
         return redirect('/sales')
+
+
+@app.route('/new', methods=['GET', 'POST'])
+def new():
+    form = NewSaleForm(request.form)
+    return render_template('new.html', form=form)
 
 
 @app.route('/import', methods=['GET', 'POST'])
@@ -69,15 +81,15 @@ def importing():
             flash("Date or value inputs where empty")
             return redirect(request.url)
 
-        parts = request.form.get('parts', None)
-        car_model = request.form.get('car_model', None)
+        parts = request.form.get('parts') or None
+        car_model = request.form['car_model'] or None
         item_count = request.form.get('item_count', None)
 
         # convert empty string to None
-        if parts == "":
-            parts = None
-        if car_model == "":
-            car_model = None
+        # if parts == "":
+        #     parts = None
+        # if car_model == "":
+        #     car_model = None
         if item_count == "":
             item_count = None
 
