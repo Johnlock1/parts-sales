@@ -69,11 +69,14 @@ def chart():
     dates = db.session.query(Sales.date).distinct(Sales.date).order_by(Sales.date).all()
     labels = [date[0].strftime('%Y/%m/%d') for date in dates]
     # print(labels)
-    val = db.session.query(func.sum(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
-    values = [float(v[0]) for v in val]
+    vals = db.session.query(func.sum(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
+    values = [float(v[0]) for v in vals]
     # print(values)
 
-    return render_template('chart.html', labels=labels, values=values)
+    avgs = db.session.query(func.avg(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
+    averages = [float(a[0]) for a in avgs]
+
+    return render_template('chart.html', labels=labels, values1=values, values2=averages)
     # return redirect(url_for('index'))
 
 # @app.route('/new', methods=['GET', 'POST'])

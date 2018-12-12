@@ -4,21 +4,29 @@
 {% endblock %}
 
 {% block body %}
-  <canvas id="bar-chart" width="800" height="450"></canvas>
+  <div>
+    <canvas id="bar-chart1" width="600" height="200"></canvas>
+  </div>
+  <div>
+    <canvas id="bar-chart2" width="600" height="200"></canvas>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <script>
+
   // Bar chart
-  new Chart(document.getElementById("bar-chart"), {
+  new Chart(document.getElementById("bar-chart1"), {
       type: 'bar',
+      // responsive: false,
+      // maintainAspectRatio: true,
       data: {
         labels : [{% for item in labels %}
                        "{{item}}",
                    {% endfor %}],
         datasets: [
           {
-            label: "Sales",
+            label: "Total Sales",
             backgroundColor: "#cd6262",
-            data : [{% for item in values %}
+            data : [{% for item in values1 %}
                       {{item}},
                     {% endfor %}]
           }
@@ -28,9 +36,36 @@
         legend: { display: false },
         title: {
           display: true,
-          text: 'Sales by date'
+          text: 'Total Sales by Date'
         }
       }
+  });
+  new Chart(document.getElementById("bar-chart2"), {
+      type: 'horizontalBar',
+      // responsive: false,
+      // maintainAspectRatio: true,
+      data: {
+        labels : [{% for item in labels %}
+                       "{{item}}",
+                   {% endfor %}],
+        datasets: [
+          {
+            label: "Avg Sale Value",
+            backgroundColor: "#cd6262",
+            data : [{% for item in values2 %}
+                      {{item}},
+                    {% endfor %}]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Average Sale Value by Date'
+        }
+      }
+
   });
   </script>
 {% endblock %}
