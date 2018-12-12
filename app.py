@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 
 UPLOAD_FOLDER = os.path.abspath(os.path.dirname('uploads')) + '/uploads'
-ALLOWED_EXTENSIONS = set(['pdf', 'xls', 'xlsx'])
+ALLOWED_EXTENSIONS = set(['xls', 'xlsx'])
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -64,10 +64,10 @@ def search_sales(search):
         return redirect('/sales')
 
 
-@app.route('/new', methods=['GET', 'POST'])
-def new():
-    form = NewSaleForm(request.form)
-    return render_template('new.html', form=form)
+# @app.route('/new', methods=['GET', 'POST'])
+# def new():
+#     form = NewSaleForm(request.form)
+#     return render_template('new.html', form=form)
 
 
 @app.route('/import', methods=['GET', 'POST'])
@@ -83,15 +83,7 @@ def importing():
 
         parts = request.form.get('parts') or None
         car_model = request.form['car_model'] or None
-        item_count = request.form.get('item_count', None)
-
-        # convert empty string to None
-        # if parts == "":
-        #     parts = None
-        # if car_model == "":
-        #     car_model = None
-        if item_count == "":
-            item_count = None
+        item_count = request.form.get('item_count') or None
 
         # save to db
         sale = Sales(date=date, parts=parts, car_model=car_model,
@@ -113,20 +105,25 @@ def allowed_file(filename):
 @app.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+
         # check if the post request has the file parts
         if 'file' not in request.files:
             flash('No file was selected')
             return redirect(request.url)
         file = request.files['file']
+
         # if the user does not select file, browser also
         # submit and empty part without filename
         if file.name == '':
             flash('No selected file')
             return redirect(request.url)
+
         # if users submit file with ext. not in ALLOWED_EXTENSIONS
         if not allowed_file(file.filename):
             flash('File extension isn\'t allowed')
             return redirect(request.url)
+
+        # upload and save & import data from it.
         if file and allowed_file(file.filename):
             print(file.filename)
             filename = secure_filename(file.filename)
