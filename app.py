@@ -1,5 +1,5 @@
 import os
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, Markup, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from werkzeug.utils import secure_filename
@@ -63,6 +63,18 @@ def search_sales(search):
         flash('No results found!')
         return redirect('/sales')
 
+
+@app.route('/chart')
+def chart():
+    dates = db.session.query(Sales.date).distinct(Sales.date).order_by(Sales.date).all()
+    labels = [date[0].strftime('%Y/%m/%d') for date in dates]
+    # print(labels)
+    val = db.session.query(func.sum(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
+    values = [float(v[0]) for v in val]
+    # print(values)
+
+    return render_template('chart.html', labels=labels, values=values)
+    # return redirect(url_for('index'))
 
 # @app.route('/new', methods=['GET', 'POST'])
 # def new():
