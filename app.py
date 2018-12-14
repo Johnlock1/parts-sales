@@ -1,5 +1,5 @@
 import os
-from flask import Flask, flash, Markup, redirect, render_template, request, url_for
+from flask import Flask, flash, Markup, redirect, render_template, request, send_from_directory, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from werkzeug.utils import secure_filename
@@ -111,6 +111,13 @@ def importing():
     return render_template('import.html')
 
 
+@app.route('/download/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    templates = os.path.abspath(os.path.dirname('download')) + '/download'
+    print(templates)
+    return send_from_directory(directory=templates, filename=filename, as_attachment=True)
+
+
 # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
 def allowed_file(filename):
     return '.' in filename and \
@@ -150,5 +157,4 @@ def upload_file():
 
 
 if __name__ == '__main__':
-
     app.run()
