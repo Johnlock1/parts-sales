@@ -148,11 +148,15 @@ def upload_file():
 
         # upload and save & import data from it.
         if file and allowed_file(file.filename):
-            print(file.filename)
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            import_file(file)
-            flash('Success! File was uploaded.')
+            try:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                import_file(file)
+                flash('Success! File was uploaded.')
+            except Exception as e:
+                print(e)
+                flash('There was a problem')
+                return redirect(request.url)
 
     return redirect(url_for('importing'))
 
