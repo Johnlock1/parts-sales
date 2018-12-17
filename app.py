@@ -133,6 +133,7 @@ def upload_file():
             flash('No file was selected')
             return redirect(request.url)
         file = request.files['file']
+        # print(file.path)
 
         # if the user does not select file, browser also
         # submit and empty part without filename
