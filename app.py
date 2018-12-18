@@ -66,17 +66,23 @@ def search_sales(search):
 
 @app.route('/chart')
 def chart():
+    labels = {}
+    values = {}
+
     dates = db.session.query(Sales.date).distinct(Sales.date).order_by(Sales.date).all()
-    labels = [date[0].strftime('%Y/%m/%d') for date in dates]
-    # print(labels)
-    vals = db.session.query(func.sum(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
-    values = [float(v[0]) for v in vals]
-    # print(values)
+    labels['dates'] = [date[0].strftime('%Y/%m/%d') for date in dates]
+
+    sums = db.session.query(func.sum(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
+    values['sums'] = [float(s[0]) for s in sums]
+
+    counts = db.session.query(func.count(Sales.value)).group_by(
+        Sales.date).order_by(Sales.date).all()
+    values['count'] = [float(c[0]) for c in counts]
 
     avgs = db.session.query(func.avg(Sales.value)).group_by(Sales.date).order_by(Sales.date).all()
-    averages = [float(a[0]) for a in avgs]
+    values['avg'] = [round(float(avg[0]), 2) for avg in avgs]
 
-    return render_template('chart.html', labels=labels, values1=values, values2=averages)
+    return render_template('chart.html', labels=labels, values=values)
     # return redirect(url_for('index'))
 
 # @app.route('/new', methods=['GET', 'POST'])
