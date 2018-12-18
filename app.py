@@ -157,8 +157,11 @@ def upload_file():
             try:
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                import_file(file)
-                flash('Success! File was uploaded.')
+                imprt = import_file(file)
+                if imprt == 'Ok':
+                    flash('Success! File was uploaded.')
+                else:
+                    raise(imprt)
             except Exception as e:
                 print(e)
                 flash('There was a problem')

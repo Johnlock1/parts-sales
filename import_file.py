@@ -13,5 +13,7 @@ def import_file(file):
         print(path)
         df = pd.read_excel(path)
         df.to_sql('sales', engine, if_exists='append', index=False)
+        return 'Ok'
     except Exception as e:
         print(e)
+        return e
