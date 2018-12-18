@@ -5,28 +5,35 @@
 
 {% block body %}
   <div>
-    <canvas id="bar-chart1" width="600" height="200"></canvas>
+    <canvas id="sum-chart" width="1000" height="200"></canvas>
   </div>
+  <br />
+  <br />
   <div>
-    <canvas id="bar-chart2" width="600" height="200"></canvas>
+    <canvas id="count-chart" width="1000" height="200"></canvas>
+  </div>
+  <br />
+  <br />
+  <div>
+    <canvas id="avg-chart" width="1000" height="200"></canvas>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <script>
 
   // Bar chart
-  new Chart(document.getElementById("bar-chart1"), {
+  new Chart(document.getElementById("sum-chart"), {
       type: 'bar',
       // responsive: false,
       // maintainAspectRatio: true,
       data: {
-        labels : [{% for item in labels %}
+        labels : [{% for item in labels['dates'] %}
                        "{{item}}",
                    {% endfor %}],
         datasets: [
           {
             label: "Total Sales",
             backgroundColor: "#cd6262",
-            data : [{% for item in values1 %}
+            data : [{% for item in values['sums'] %}
                       {{item}},
                     {% endfor %}]
           }
@@ -40,19 +47,48 @@
         }
       }
   });
-  new Chart(document.getElementById("bar-chart2"), {
-      type: 'horizontalBar',
+
+  // Bar chart
+  new Chart(document.getElementById("count-chart"), {
+      type: 'line',
       // responsive: false,
       // maintainAspectRatio: true,
       data: {
-        labels : [{% for item in labels %}
+        labels : [{% for item in labels['dates'] %}
+                       "{{item}}",
+                   {% endfor %}],
+        datasets: [
+          {
+            label: "No of Sales",
+            backgroundColor: "#cd6262",
+            data : [{% for item in values['count'] %}
+                      {{item}},
+                    {% endfor %}]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'No of Sales by Date'
+        }
+      }
+  });
+
+  new Chart(document.getElementById("avg-chart"), {
+      type: 'bar',
+      // responsive: false,
+      // maintainAspectRatio: true,
+      data: {
+        labels : [{% for item in labels['dates'] %}
                        "{{item}}",
                    {% endfor %}],
         datasets: [
           {
             label: "Avg Sale Value",
             backgroundColor: "#cd6262",
-            data : [{% for item in values2 %}
+            data : [{% for item in values['avg'] %}
                       {{item}},
                     {% endfor %}]
           }
