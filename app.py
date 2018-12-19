@@ -21,11 +21,13 @@ from tables import *
 from forms import NewSaleForm, SalesSearchForm
 
 
+# Index page
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
+# Sale (table) page
 @app.route('/sales', methods=['GET', 'POST'])
 def sales():
     results = Sales.query.order_by(Sales.date).all()
@@ -64,6 +66,28 @@ def search_sales(search):
         return redirect('/sales')
 
 
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    sale = Sales.query.filter_by(id=id).first()
+
+    if sale:
+        form = NewSaleForm(formdata=request.form, obj=sale)
+        if request.method == 'POST':
+            sale.date = form.date.data
+            sale.parts = form.parts.data
+            sale.car_model = form.car_model.data
+            sale.item_count = form.item_count.data
+            sale.value = form.value.data
+            db.session.commit()
+            flash('Successful edit!')
+            return redirect('sales')
+
+        return render_template('edit.html', form=form)
+    else:
+        return f'Error loading #{id}'
+
+
+# Sales(Chart) page
 @app.route('/chart')
 def chart():
     labels = {}
@@ -83,7 +107,7 @@ def chart():
     values['avg'] = [round(float(avg[0]), 2) for avg in avgs]
 
     return render_template('chart.html', labels=labels, values=values)
-    # return redirect(url_for('index'))
+
 
 # @app.route('/new', methods=['GET', 'POST'])
 # def new():
@@ -91,6 +115,7 @@ def chart():
 #     return render_template('new.html', form=form)
 
 
+# Enter data page
 @app.route('/import', methods=['GET', 'POST'])
 def importing():
     if request.method == 'POST':
